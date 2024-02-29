@@ -116,8 +116,9 @@ def main():
   for filename in argv[1:]:
     df = convert_csv_to_dataframe(filename)
     if df is not None:
-      sclk = convert_analog_to_digital(df["SCLK"])
-      signal = convert_analog_to_digital(df["MOSI_MISO"])  # Adjust thresholds if needed
+      sclk = convert_analog_to_digital(df.iloc[:, 1])
+
+      signal = convert_analog_to_digital(df.iloc[:, 2])  # Adjust thresholds if needed
       # latched_data = latch_data_on_sclk(df, "SCLK", "MOSI_MISO")  # Replace "MOSI" with "MISO" if using MISO data
 
       bit_stream = latch_data_on_sclk_to_bitstream(sclk, signal)
