@@ -19,7 +19,7 @@ def convert_csv_to_dataframe(filename):
     print(f"Error: File '{filename}' not found.")
     return None
 
-def convert_analog_to_digital(data, threshold_low=0.8, threshold_high=2.0):
+def convert_analog_to_digital(data, threshold_low=1.0, threshold_high=2.0):
   """
   Converts an analog signal to a digital signal with hysteresis.
 
@@ -36,9 +36,10 @@ def convert_analog_to_digital(data, threshold_low=0.8, threshold_high=2.0):
   first = True
   for value in data:
     if first:
-      if value >= threshold_high:
+      middle = (threshold_high + threshold_low)/2
+      if value > middle:
           previous_data = 1
-      elif value <= threshold_low:
+      elif value <= middle:
           previous_data = 0
       data_filt.append(previous_data)
       first = False
@@ -129,8 +130,10 @@ def main():
 
       decoded = decode_bitstream(bit_stream)
       # Process or display the latched data as needed
-      print(f"Decoded data from {filename}:", end="\n  -> ")
-      print(decoded)
+      print(f"Decoded data from {filename}:", end="\n  -> [")
+      for num in decoded:
+        print(num, end=" ")
+      print("]")
 
 if __name__ == "__main__":
   main()
