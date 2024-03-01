@@ -82,7 +82,7 @@ def latch_data_on_sclk_to_bitstream(sclk_digital, data_digital, rising_edge=True
 
   return bit_stream
 
-def decode_bitstream(bitstream, group_by=8, MSB_first=True):
+def decode_bitstream(bitstream, group_by=8, MSB_first=True, hexadecimal=True):
   total_length = len(bitstream)
 
   if total_length % group_by != 0:
@@ -101,7 +101,11 @@ def decode_bitstream(bitstream, group_by=8, MSB_first=True):
     number = 0
     for j, bit in enumerate(ordered_group):
       number |= (bit << j)
-    grouped_stream.append(number)
+
+    if hexadecimal:
+      grouped_stream.append(hex(number))
+    else:
+      grouped_stream.append(number)
 
   return grouped_stream
 
